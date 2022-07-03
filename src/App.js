@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import {Route, Routes} from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import {fetchAuth, selectIsAuth} from "./redux/slices/user";
+
+import Container from "@mui/material/Container";
+import {Header} from "./components/Header";
+import {Registration} from "./pages/Registration";
+import {Login} from "./pages/Login";
+import {Home} from "./pages/Home";
+import {Account} from "./pages/Account";
+import {People} from "./pages/People";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    const dispatch = useDispatch();
+    const isAuth = useSelector(selectIsAuth);
+
+    React.useEffect(() => {
+        dispatch(fetchAuth());
+    }, []);
+
+    return (
+      <>
+        <Header />
+        <Container maxWidth="lg">
+            <Routes>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/registration" element={<Registration/>}/>
+                <Route path="/account" element={<Account/>}/>
+                <Route path="/people" element={<People/>}/>
+            </Routes>
+        </Container>
+      </>
   );
 }
 
